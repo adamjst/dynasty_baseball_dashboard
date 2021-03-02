@@ -6,6 +6,7 @@ library(googlesheets4)
 
 url <- 'https://docs.google.com/spreadsheets/d/1cXYAd8REWA_Qylx9KehqHwFmYPnaNRhBRTZakcG0reQ/edit#gid=1873886035'
 
+
 teams <- c('All teams', 'Bichette Happens', 'Capital of Vermont', 'ChiefChompChamp44', "Civil Wright's", 'Drunken Ueckers',
             "Fightin' Hellfish", 'Fluke of Nature', 'Lindor Truffles', 'Orange the New Black', "Rhys's Pieces",
             'The Beach Bombers', 'The Big Red Machine', 'Three True Outcomes', 'Trust the Prospects', 'Waverider',
@@ -14,11 +15,6 @@ teams <- c('All teams', 'Bichette Happens', 'Capital of Vermont', 'ChiefChompCha
 
 # Define UI for app that draws a histogram ----
 ui <- navbarPage("Dynasty Baseball",
-                 tabPanel("Home",
-                          fluidPage(titlePanel("WORK IN PROGRESS"))),
-                 tabPanel("Spreadsheet",
-                          fluidPage(titlePanel("Dynasty Baseball Spreadsheet"),
-                                    htmlOutput("googleSheet"))),
                  tabPanel("Summary Statistics",       
                           selectInput(inputId = "dataset", label = "Dataset", choices = unique(all_teams$Team)),
                           conditionalPanel( condition = "output.nrows",
@@ -42,15 +38,6 @@ ui <- navbarPage("Dynasty Baseball",
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-  output$googleSheet <- renderUI({
-    tags$iframe(id = "googleSheet",
-                src = url,
-                width = 2048,
-                height = 768,
-                frameborder = 0,
-                marginheight = 0)})
-
-  
   # choose columns to display
   output$capPlot <- renderPlot({
     choice <- subset(all_teams, Team == input$dataset)
@@ -72,3 +59,4 @@ server <- function(input, output) {
   })
 }
 shinyApp(ui = ui, server = server)
+runGitHub( "dynasty_baseball_dashboard", "adamjst")
